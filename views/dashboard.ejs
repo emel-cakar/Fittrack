@@ -1,0 +1,85 @@
+<%- include('partials/header') %>
+
+<section class="page-header">
+    <h1>Welcome back, <%= username %>! &#128170;</h1>
+</section>
+
+<!-- Stats cards -->
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <div class="stat-icon">&#128196;</div>
+        <div class="stat-value"><%= totalWorkouts %></div>
+        <div class="stat-label">Total Workouts</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">&#9201;</div>
+        <div class="stat-value"><%= totalMins %></div>
+        <div class="stat-label">Minutes Trained</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">&#128293;</div>
+        <!-- Convert minutes to hours and minutes for display -->
+        <div class="stat-value"><%= Math.floor(totalMins / 60) %>h <%= totalMins % 60 %>m</div>
+        <div class="stat-label">Total Time</div>
+    </div>
+
+</div>
+
+<!-- Recent workouts table -->
+<section class="recent-section">
+    <div class="recent-header">
+        <h2>Recent Workouts</h2>
+        <a href="/workouts" class="btn-secondary">View All</a>
+    </div>
+
+    <% if (recent.length === 0) { %>
+        <div class="empty-state">
+            <p>You haven't logged any workouts yet. <a href="/workouts/add">Add your first one!</a></p>
+        </div>
+    <% } else { %>
+        <table class="workout-table">
+            <thead>
+                <tr>
+                    <th>Exercise</th>
+                    <th>Category</th>
+                    <th>Duration</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% recent.forEach(workout => { %>
+                    <tr>
+                        <td><strong><%= workout.exercise_name %></strong></td>
+                        <td>
+                            <span class="badge badge-<%= workout.category.toLowerCase() %>">
+                                <%= workout.category %>
+                            </span>
+                        </td>
+                        <td>
+                            <% if (workout.duration_mins) { %>
+                                <%= workout.duration_mins %> mins
+                            <% } else { %>
+                                —
+                            <% } %>
+                        </td>
+                        <td><%= new Date(workout.workout_date).toLocaleDateString('en-GB') %></td>
+                        <td>
+                            <a href="/workouts/<%= workout.id %>/edit" class="btn-edit">Edit</a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+</section>
+
+<div class="dashboard-actions">
+    <a href="/workouts/add" class="btn-primary">+ Log a Workout</a>
+    <a href="/workouts" class="btn-secondary">All Workouts</a>
+</div>
+
+<%- include('partials/footer') %>

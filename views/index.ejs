@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+    <h1>Welcome to FitTrack</h1>
+    <p>Log your workouts, track your progress, and stay motivated.</p>
+
+    <% if (username) { %>
+        <a href="/workouts" class="btn-primary">View My Workouts</a>
+        <a href="/workouts/add" class="btn-secondary">+ Log a Workout</a>
+    <% } else { %>
+        <a href="/register" class="btn-primary">Get Started</a>
+        <a href="/login" class="btn-secondary">Login</a>
+    <% } %>
+</section>
+
+<section class="features">
+    <div class="feature-card">
+        <h3>&#128196; Log Workouts</h3>
+        <p>Record exercises, sets, reps, duration and personal notes.</p>
+    </div>
+    <div class="feature-card">
+        <h3>&#128269; Search & Filter</h3>
+        <p>Find any workout instantly by name or category.</p>
+    </div>
+    <div class="feature-card">
+        <h3>&#128274; Private & Secure</h3>
+        <p>Your data is yours. Only you can see your logs.</p>
+    </div>
+</section>
+
+<%- include('partials/footer') %>

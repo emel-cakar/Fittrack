@@ -1,0 +1,70 @@
+<%- include('../partials/header') %>
+
+<section class="page-header">
+    <h1>My Workouts</h1>
+    <a href="/workouts/add" class="btn-primary">+ Add Workout</a>
+</section>
+
+<!-- Success message — only shows when redirected with ?success= -->
+<% if (success) { %>
+    <div class="alert alert-success"><%= success %></div>
+<% } %>
+
+<!-- Search form -->
+<form action="/workouts" method="GET" class="search-form">
+    <input
+        type="text"
+        name="search"
+        placeholder="Search by exercise or category..."
+        value="<%= search %>"
+    >
+    <button type="submit" class="btn-secondary">Search</button>
+    <% if (search) { %>
+        <a href="/workouts" class="btn-clear">Clear</a>
+    <% } %>
+</form>
+
+<% if (workouts.length === 0) { %>
+    <div class="empty-state">
+        <p>No workouts found. <a href="/workouts/add">Log your first workout!</a></p>
+    </div>
+<% } else { %>
+    <div class="workout-grid">
+        <% workouts.forEach(workout => { %>
+            <div class="workout-card">
+                <div class="workout-card-header">
+                    <h3><%= workout.exercise_name %></h3>
+                    <span class="badge badge-<%= workout.category.toLowerCase() %>">
+                        <%= workout.category %>
+                    </span>
+                </div>
+
+                <p class="workout-date">
+                    &#128197; <%= new Date(workout.workout_date).toLocaleDateString('en-GB') %>
+                </p>
+
+                <div class="workout-stats">
+                    <% if (workout.duration_mins) { %>
+                        <span>&#9201; <strong><%= workout.duration_mins %> mins</strong></span>
+                    <% } %>
+                </div>
+
+                <% if (workout.notes) { %>
+                    <p class="workout-notes"><em><%= workout.notes %></em></p>
+                <% } %>
+
+                <div class="workout-actions">
+                    <a href="/workouts/<%= workout.id %>/edit" class="btn-edit">Edit</a>
+
+                    <!-- Delete uses a form POST (HTML forms don't support DELETE natively) -->
+                    <form action="/workouts/<%= workout.id %>/delete" method="POST"
+                          onsubmit="return confirm('Delete this workout?')">
+                        <button type="submit" class="btn-delete">Delete</button>
+                    </form>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+<% } %>
+
+<%- include('../partials/footer') %>
